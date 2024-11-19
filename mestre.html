@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mestre.css">
+    <title>Rolagem de Dados - Mestre</title>
+</head>
+
+<body>
+    <h1>Rolagem de Dados - Assimilador</h1>
+
+    <!-- Seleção de dados -->
+    <div>
+        <label for="diceInput">Quantidade e tipo de dados (Ex: 1d6, 2d10):</label>
+        <input type="text" id="diceInput" placeholder="Ex: 2d8, 1d20">
+        <button onclick="rollDice()" id="rollDiceButton">Rolar Dados</button>
+    </div>
+
+    <!-- Resultado -->
+    <div id="result" style="margin-top: 20px;">
+        <h2>Resultado:</h2>
+        <div id="currentRoll"></div>
+    </div>
+
+    <!-- Histórico -->
+    <div id="history" style="margin-top: 20px;">
+        <button onclick="clearHistory()">Limpar Histórico</button>
+        <h2>Histórico:</h2>
+        <ul id="historyList"></ul>
+    </div>
+
+    <script>
+        // Tabela de resultados para d6, d10 e d12 com suas respectivas relações de sucesso, pressão e adaptação
+        const outcomeTable = {
+            d6: [
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "pressão", sucessos: 0, adaptacoes: 0, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "sucesso", sucessos: 1, adaptacoes: 0, pressoes: 0 }
+            ],
+            d10: [
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "pressão", sucessos: 0, adaptacoes: 0, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "sucesso", sucessos: 1, adaptacoes: 0, pressoes: 0 },
+                { resultado: "2 sucessos", sucessos: 2, adaptacoes: 0, pressoes: 0 },
+                { resultado: "sucesso e adaptação", sucessos: 1, adaptacoes: 1, pressoes: 0 },
+                { resultado: "sucesso, pressão e adaptação", sucessos: 1, adaptacoes: 1, pressoes: 1 },
+                { resultado: "2 sucessos e pressão", sucessos: 2, adaptacoes: 0, pressoes: 1 }
+            ],
+            d12: [
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "nada", sucessos: 0, adaptacoes: 0, pressoes: 0 },
+                { resultado: "pressão", sucessos: 0, adaptacoes: 0, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "pressão e adaptação", sucessos: 0, adaptacoes: 1, pressoes: 1 },
+                { resultado: "sucesso", sucessos: 1, adaptacoes: 0, pressoes: 0 },
+                { resultado: "2 sucessos", sucessos: 2, adaptacoes: 0, pressoes: 0 },
+                { resultado: "sucesso e adaptação", sucessos: 1, adaptacoes: 1, pressoes: 0 },
+                { resultado: "sucesso, pressão e adaptação", sucessos: 1, adaptacoes: 1, pressoes: 1 },
+                { resultado: "2 sucessos e pressão", sucessos: 2, adaptacoes: 0, pressoes: 1 },
+                { resultado: "1 sucesso, 2 adaptações e 1 pressão", sucessos: 1, adaptacoes: 2, pressoes: 1 },
+                { resultado: "2 pressões", sucessos: 0, adaptacoes: 0, pressoes: 2 }
+            ]
+        };
+
+        // Função para rolar os dados e calcular os resultados
+        function rollDice() {
+            const input = document.getElementById("diceInput").value;
+            const diceRegex = /(\d+)d(\d+)/g;
+            let match;
+            let totalRolls = [];
+            let totalSucessos = 0;
+            let totalAdaptacoes = 0;
+            let totalPressoes = 0;
+
+            while ((match = diceRegex.exec(input)) !== null) {
+                const [_, count, sides] = match.map(Number);
+                const diceType = `d${sides}`;
+
+                if (!outcomeTable[diceType]) {
+                    // Se o dado não tem tabela de resultados (d2, d4, d20)
+                    for (let i = 0; i < count; i++) {
+                        const roll = Math.floor(Math.random() * sides) + 1;
+                        totalRolls.push({ sides, roll });
+                    }
+                    continue;
+                }
+
+                for (let i = 0; i < count; i++) {
+                    const roll = Math.floor(Math.random() * sides) + 1;
+                    totalRolls.push({ sides, roll });
+                    const outcome = outcomeTable[diceType][roll - 1];
+                    totalSucessos += outcome.sucessos;
+                    totalAdaptacoes += outcome.adaptacoes;
+                    totalPressoes += outcome.pressoes;
+                }
+            }
+
+            displayResult(totalRolls, totalSucessos, totalAdaptacoes, totalPressoes);
+        }
+
+        // Função para exibir o resultado
+        function displayResult(rolls, totalSucessos, totalAdaptacoes, totalPressoes) {
+            const currentRollDiv = document.getElementById("currentRoll");
+            const historyList = document.getElementById("historyList");
+            const history = JSON.parse(localStorage.getItem("historyKey") || "[]");
+
+            const rollDetails = rolls.map((r) => `d${r.sides}: ${r.roll}`).join(", ");
+            const outcomeSummary = `Sucessos: ${totalSucessos}, Adaptações: ${totalAdaptacoes}, Pressões: ${totalPressoes}`;
+            const resultString = `Rolagem: [${rollDetails}] => ${outcomeSummary}`;
+
+            // Atualizar resultados na página
+            currentRollDiv.textContent = resultString;
+
+            // Salvar no histórico
+            history.unshift(resultString);
+            localStorage.setItem("historyKey", JSON.stringify(history));
+
+            // Atualizar histórico visual
+            historyList.innerHTML = history.map((item) => `<li>${item}</li>`).join("");
+        }
+
+        function clearHistory() {
+            localStorage.removeItem("historyKey");
+            document.getElementById("historyList").innerHTML = '';
+        }
+
+    </script>
+</body>
+
+</html>

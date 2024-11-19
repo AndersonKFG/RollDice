@@ -1,0 +1,247 @@
+/* Definir a fonte padrão */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fb;
+    color: #444;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilização do título principal */
+h1 {
+    text-align: center;
+    color: #0069d9;
+    margin-top: 30px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+/* Estilo geral para os containers */
+div {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Alteração do container ao passar o mouse */
+div:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Estilo do input e botão */
+input[type="text"] {
+    width: calc(100% - 130px);
+    padding: 12px;
+    font-size: 18px;
+    margin-right: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    background-color: #0069d9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo da seção de resultado */
+#result {
+    background-color: #e9f7fe;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#currentRoll {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+#rollDiceButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Estilo do histórico */
+#history1, #history2, #history3, #history4  {
+    background-color: #f9f9fb;
+    padding: 20px;
+    border-radius: 8px;
+    height: 300px;  /* Limita a altura */
+    overflow-y: auto;  /* Adiciona rolagem vertical */
+    margin-top: 20px;
+}
+
+#history h2 {
+    color: #0069d9;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#history ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+#history li {
+    background-color: #f0f8ff;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Organizar os jogadores lateralmente */
+#players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.player {
+    width: 22%;  /* Ajuste a largura conforme necessário */
+    margin-bottom: 20px;
+    background-color: #e9f7fe;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#history, #result {
+    margin-top: 40px;
+}
+
+/* Estilo responsivo para telas menores */
+@media (max-width: 600px) {
+    div {
+        padding: 15px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    /* Organizar os jogadores de forma vertical em telas pequenas */
+    #players {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .player {
+        width: 80%;  /* Aumenta o tamanho dos jogadores em telas pequenas */
+        margin-bottom: 15px;
+    }
+}
+
+/* Resetando o estilo padrão do body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container para os elementos principais */
+.container {
+    display: flex;
+    justify-content: space-between;  /* Espaça as divs igualmente */
+    gap: 20px;  /* Espaço entre as divs */
+    padding: 20px;
+    flex-wrap: wrap;  /* Permite que as divs se movam para a linha seguinte se necessário */
+}
+
+/* Estilo dos jogadores */
+#players {
+    background-color: #f9f9fb;
+    padding: 20px;
+    border-radius: 8px;
+    width: 32%;  /* Largura ajustada para caber 3 divs na linha */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#players h2 {
+    color: #0069d9;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Estilo do histórico */
+#history {
+    background-color: #f9f9fb;
+    padding: 20px;
+    border-radius: 8px;
+    height: 300px;  /* Limita a altura */
+    overflow-y: auto;  /* Adiciona rolagem vertical */
+    width: 32%;  /* Largura ajustada para caber 3 divs na linha */
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#history h2 {
+    color: #0069d9;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#history ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+#history li {
+    background-color: #f0f8ff;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo do resultado */
+#result {
+    background-color: #f9f9fb;
+    padding: 20px;
+    border-radius: 8px;
+    width: 32%;  /* Largura ajustada para caber 3 divs na linha */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#result h2 {
+    color: #0069d9;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#currentRoll {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+}
